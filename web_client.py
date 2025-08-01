@@ -28,6 +28,14 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
                 <input type="date" id="birth_date" name="birth_date" required>
             </div>
             <div class="form-group">
+                <label for="machine_name">Machine Name</label>
+                <input type="text" id="machine_name" name="machine_name" value="{{ machine_name }}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" value="{{ username }}" readonly>
+            </div>
+            <div class="form-group">
                 <label for="temperature">Temperature (°C)</label>
                 <input type="number" id="temperature" name="temperature" step="0.1" required placeholder="e.g., 25.5">
             </div>

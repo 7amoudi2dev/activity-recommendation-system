@@ -62,52 +62,52 @@ def process_activity_request():
         return jsonify({"error": str(e)}), 500
 
 
-# # Get all requests
-# @app.route('/api/history', methods=['GET'])
-# def get_history():
-#     try:
-#         response = requests.get(f"{DAO_SERVICE_URL}/requests", timeout=5)
-#         if response.status_code == 200:
-#             return jsonify(response.json())
-#         else:
-#             return jsonify({"error": f"DAO Service returned {response.status_code}"}), 500
-#     except requests.exceptions.ConnectionError:
-#         return jsonify({"error": "Cannot connect to DAO Service. Is it running on port 5001?"}), 503
-#     except Exception as e:
-#         return jsonify({"error": str(e)}), 500
+# Get all requests
+@app.route('/api/history', methods=['GET'])
+def get_history():
+    try:
+        response = requests.get(f"{DAO_SERVICE_URL}/requests", timeout=5)
+        if response.status_code == 200:
+            return jsonify(response.json())
+        else:
+            return jsonify({"error": f"DAO Service returned {response.status_code}"}), 500
+    except requests.exceptions.ConnectionError:
+        return jsonify({"error": "Cannot connect to DAO Service. Is it running on port 5001?"}), 503
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
-# # Get single request
-# @app.route('/api/history/<int:request_id>', methods=['GET'])
-# def get_request(request_id):
-#     try:
-#         response = requests.get(f"{DAO_SERVICE_URL}/requests/{request_id}", timeout=5)
-#         if response.status_code == 200:
-#             return jsonify(response.json())
-#         elif response.status_code == 404:
-#             return jsonify({"error": "Request not found"}), 404
-#         else:
-#             return jsonify({"error": f"DAO Service error"}), 500
-#     except Exception as e:
-#         return jsonify({"error": str(e)}), 500
+# Get single request
+@app.route('/api/history/<int:request_id>', methods=['GET'])
+def get_request(request_id):
+    try:
+        response = requests.get(f"{DAO_SERVICE_URL}/requests/{request_id}", timeout=5)
+        if response.status_code == 200:
+            return jsonify(response.json())
+        elif response.status_code == 404:
+            return jsonify({"error": "Request not found"}), 404
+        else:
+            return jsonify({"error": f"DAO Service error"}), 500
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 # Health check
-# @app.route('/api/health', methods=['GET'])
-# def health():
-#     # Check if DAO service is healthy
-#     try:
-#         dao_response = requests.get(f"{DAO_SERVICE_URL}/health", timeout=2)
-#         dao_healthy = dao_response.status_code == 200
-#     except:
-#         dao_healthy = False
-#
-#     return jsonify({
-#         "status": "healthy",
-#         "service": "Activity Service API",
-#         "version": "1.0",
-#         "dao_service": "connected" if dao_healthy else "disconnected"
-#     })
+@app.route('/api/health', methods=['GET'])
+def health():
+    # Check if DAO service is healthy
+    try:
+        dao_response = requests.get(f"{DAO_SERVICE_URL}/health", timeout=2)
+        dao_healthy = dao_response.status_code == 200
+    except:
+        dao_healthy = False
+
+    return jsonify({
+        "status": "healthy",
+        "service": "Activity Service API",
+        "version": "1.0",
+        "dao_service": "connected" if dao_healthy else "disconnected"
+    })
 
 
 # Root endpoint - API info
@@ -126,16 +126,16 @@ def api_info():
 
 
 if __name__ == '__main__':
-    # print("Checking connection to DAO Service...")
-    # try:
-    #     response = requests.get(f"{DAO_SERVICE_URL}/health", timeout=2)
-    #     if response.status_code == 200:
-    #         print("✓ Successfully connected to DAO Service")
-    #     else:
-    #         print("✗ DAO Service is not healthy")
-    # except:
-    #     print("✗ Cannot connect to DAO Service on port 5001")
-    #     print("  Make sure to start dao_service.py first!")
+    print("Checking connection to DAO Service...")
+    try:
+        response = requests.get(f"{DAO_SERVICE_URL}/health", timeout=2)
+        if response.status_code == 200:
+            print("✓ Successfully connected to DAO Service")
+        else:
+            print("✗ DAO Service is not healthy")
+    except:
+        print("✗ Cannot connect to DAO Service on port 5001")
+        print("  Make sure to start dao_service.py first!")
 
     print(f"Starting Activity Service API on port 5002...")
     app.run(port=5002, debug=True)
